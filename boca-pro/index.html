@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boca 2026 · Fixture real + Simulador</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header>
+  <div class="head-in">
+    <div class="crest" id="crest">CABJ</div>
+    <div><h1 id="title">Boca 2026 <small>FIXTURE REAL · DATOS EN VIVO</small></h1></div>
+    <div class="upd" id="updated">Cargando…</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="countdown" id="countdown" style="display:none">
+    <div>
+      <div class="lbl">⏱ Próximo partido</div>
+      <div class="mt">—</div>
+      <div class="sub" style="font-size:12px;color:#cfe0ff"></div>
+    </div>
+    <div class="clk" id="cdClock">--:--:--</div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-v="prox">📅 Próximos</div>
+    <div class="tab" data-v="result">✅ Resultados</div>
+    <div class="tab" data-v="sim">🎮 Simulador de copa</div>
+  </div>
+
+  <section class="view active" id="prox">
+    <div class="chips" id="chipsProx"></div>
+    <div id="listProx"><div class="state"><div class="spin"></div>Cargando…</div></div>
+    <button class="chip" id="btnRefresh" style="margin-top:8px">🔄 Actualizar ahora</button>
+  </section>
+
+  <section class="view" id="result">
+    <div id="listResult"><div class="state">—</div></div>
+  </section>
+
+  <section class="view" id="sim">
+    <div class="simbox">
+      <h4>🎯 Simulá el camino de Boca en las copas</h4>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:6px">
+        Se arma con los partidos de copa reales del fixture. Marcá quién gana cada llave.</p>
+      <div id="simSteps"></div>
+      <div class="champ" id="champ"></div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  Datos reales de <a href="https://www.thesportsdb.com" target="_blank">TheSportsDB</a> ·
+  actualización automática vía GitHub Actions · 100% gratis, sin backend.
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
