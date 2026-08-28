@@ -1,0 +1,46 @@
+name: Actualizar fixture (API-Football)
+
+# Corre solo: cada 2 h + a las horas tipicas de partidos, y se puede disparar a mano.
+# GitHub Actions es GRATIS e ILIMITADO en repos publicos.
+on:
+  schedule:
+    - cron: '13 */2 * * *'    # cada 2 horas (min 13 para evitar congestion)
+  workflow_dispatch:           # boton "Run workflow" para probar
+
+permissions:
+  contents: write
+
+# Evita que dos corridas se pisen
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Descargar datos reales (fixture + cuadros)
+        env:
+          APIFOOTBALL_KEY: ${{ secrets.APIFOOTBALL_KEY }}   # secret obligatorio
+          TEAM_ID: '451'          # Boca Juniors
+          TEAM_NAME: 'Boca Juniors'
+          SEASON: '2026'
+        run: python scripts/fetch_data.py
+
+      - name: Commitear si hubo cambios
+        run: |
+          git config user.name  "fixture-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/data.json data/brackets.json
+          if git diff --staged --quiet; then
+            echo "Sin cambios."
+          else
+            git commit -m "data: fixture y cuadros $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          fi

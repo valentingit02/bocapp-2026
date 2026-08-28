@@ -1,25 +1,17 @@
 {
   "generatedAt": "2026-08-27T23:00:00Z",
-  "team": { "id": "134815", "name": "Boca Juniors", "badge": null, "stadium": "La Bombonera" },
+  "team": { "id": "451", "name": "Boca Juniors" },
   "season": "2026",
-  "count": 15,
-  "_nota": "Archivo de arranque con datos reales (Ago 2026). El robot de GitHub Actions lo reemplaza automaticamente con el fixture en vivo.",
+  "source": "semilla (se reemplaza al correr el robot con API-Football)",
+  "count": 8,
   "matches": [
-    {"id":"s1","liga":"Copa Sudamericana","home":"Boca Juniors","away":"O'Higgins","homeScore":"1","awayScore":"0","date":"2026-08-12","time":"21:30:00","timestamp":"2026-08-13T00:30:00","venue":"La Bombonera","round":"Playoff Ida","cond":"local"},
-    {"id":"s2","liga":"Copa Sudamericana","home":"O'Higgins","away":"Boca Juniors","homeScore":"1","awayScore":"0","date":"2026-08-19","time":"21:30:00","timestamp":"2026-08-20T00:30:00","venue":"Estadio El Teniente","round":"Playoff Vuelta","cond":"visita"},
-    {"id":"s3","liga":"Copa Sudamericana","home":"Boca Juniors","away":"Recoleta FC","homeScore":"3","awayScore":"1","date":"2026-08-12","time":"19:00:00","timestamp":"2026-08-12T22:00:00","venue":"La Bombonera","round":"Octavos Ida","cond":"local"},
-    {"id":"s4","liga":"Copa Sudamericana","home":"Recoleta FC","away":"Boca Juniors","homeScore":"0","awayScore":"4","date":"2026-08-18","time":"19:00:00","timestamp":"2026-08-18T22:00:00","venue":"Asuncion","round":"Octavos Vuelta","cond":"visita"},
-
-    {"id":"l1","liga":"Argentine Liga Profesional","home":"Boca Juniors","away":"Lanús","homeScore":null,"awayScore":null,"date":"2026-08-28","time":"21:30:00","timestamp":"2026-08-29T00:30:00","venue":"La Bombonera","round":"7","cond":"local"},
-    {"id":"c1","liga":"Copa Argentina","home":"Vélez","away":"Boca Juniors","homeScore":null,"awayScore":null,"date":"2026-09-02","time":"21:15:00","timestamp":"2026-09-03T00:15:00","venue":"Estadio Mario A. Kempes, Córdoba","round":"Octavos","cond":"neutral"},
-    {"id":"l2","liga":"Argentine Liga Profesional","home":"Gimnasia (Mza.)","away":"Boca Juniors","homeScore":null,"awayScore":null,"date":"2026-09-06","time":"00:00:00","timestamp":null,"venue":"Estadio Víctor Legrotaglie, Mendoza","round":"8","cond":"visita"},
-    {"id":"s5","liga":"Copa Sudamericana","home":"Boca Juniors","away":"São Paulo","homeScore":null,"awayScore":null,"date":"2026-09-08","time":"21:30:00","timestamp":"2026-09-09T00:30:00","venue":"La Bombonera","round":"Cuartos Ida","cond":"local"},
-    {"id":"l3","liga":"Argentine Liga Profesional","home":"Boca Juniors","away":"Central Córdoba (SdE)","homeScore":null,"awayScore":null,"date":"2026-09-13","time":"00:00:00","timestamp":null,"venue":"La Bombonera","round":"9","cond":"local"},
-    {"id":"s6","liga":"Copa Sudamericana","home":"São Paulo","away":"Boca Juniors","homeScore":null,"awayScore":null,"date":"2026-09-15","time":"21:30:00","timestamp":"2026-09-16T00:30:00","venue":"Estadio Morumbí, São Paulo (BRA)","round":"Cuartos Vuelta","cond":"visita"},
-    {"id":"l4","liga":"Argentine Liga Profesional","home":"San Lorenzo","away":"Boca Juniors","homeScore":null,"awayScore":null,"date":"2026-09-20","time":"00:00:00","timestamp":null,"venue":"Estadio Pedro Bidegain","round":"10","cond":"visita"},
-    {"id":"l5","liga":"Argentine Liga Profesional","home":"Boca Juniors","away":"Unión (Santa Fe)","homeScore":null,"awayScore":null,"date":"2026-10-04","time":"00:00:00","timestamp":null,"venue":"La Bombonera","round":"11","cond":"local"},
-    {"id":"l6","liga":"Argentine Liga Profesional","home":"Instituto (Córdoba)","away":"Boca Juniors","homeScore":null,"awayScore":null,"date":"2026-10-11","time":"00:00:00","timestamp":null,"venue":"Estadio Monumental de Alta Córdoba","round":"12","cond":"visita"},
-    {"id":"l7","liga":"Argentine Liga Profesional","home":"Boca Juniors","away":"River Plate","homeScore":null,"awayScore":null,"date":"2026-11-01","time":"00:00:00","timestamp":null,"venue":"La Bombonera","round":"15","cond":"local"},
-    {"id":"l8","liga":"Argentine Liga Profesional","home":"Boca Juniors","away":"Defensa y Justicia","homeScore":null,"awayScore":null,"date":"2026-11-08","time":"00:00:00","timestamp":null,"venue":"La Bombonera","round":"16","cond":"local"}
+    {"id":1,"liga":"Liga Profesional","round":"Fecha 7","home":"Boca Juniors","away":"Lanús","homeBadge":null,"awayBadge":null,"homeScore":null,"awayScore":null,"date":"2026-08-28","time":"21:30:00","timestamp":"2026-08-28T21:30:00-03:00","venue":"La Bombonera","status":"NS","cond":"local"},
+    {"id":2,"liga":"Copa Argentina","round":"Octavos de final","home":"Vélez","away":"Boca Juniors","homeScore":null,"awayScore":null,"date":"2026-09-02","time":"21:15:00","timestamp":"2026-09-02T21:15:00-03:00","venue":"Estadio Mario A. Kempes, Córdoba","status":"NS","cond":"neutral"},
+    {"id":3,"liga":"Liga Profesional","round":"Fecha 8","home":"Gimnasia (Mza.)","away":"Boca Juniors","homeScore":null,"awayScore":null,"date":"2026-09-06","time":"00:00:00","timestamp":"2026-09-06T00:00:00-03:00","venue":"Estadio Víctor Legrotaglie, Mendoza","status":"NS","cond":"visita"},
+    {"id":4,"liga":"Copa Sudamericana","round":"Cuartos de final","home":"Boca Juniors","away":"São Paulo","homeScore":null,"awayScore":null,"date":"2026-09-08","time":"21:30:00","timestamp":"2026-09-08T21:30:00-03:00","venue":"La Bombonera","status":"NS","cond":"local"},
+    {"id":5,"liga":"Liga Profesional","round":"Fecha 9","home":"Boca Juniors","away":"Central Córdoba (SdE)","homeScore":null,"awayScore":null,"date":"2026-09-13","time":"00:00:00","timestamp":"2026-09-13T00:00:00-03:00","venue":"La Bombonera","status":"NS","cond":"local"},
+    {"id":6,"liga":"Copa Sudamericana","round":"Cuartos de final","home":"São Paulo","away":"Boca Juniors","homeScore":null,"awayScore":null,"date":"2026-09-15","time":"21:30:00","timestamp":"2026-09-15T21:30:00-03:00","venue":"Estadio Morumbí, São Paulo","status":"NS","cond":"visita"},
+    {"id":7,"liga":"Liga Profesional","round":"Fecha 15","home":"Boca Juniors","away":"River Plate","homeScore":null,"awayScore":null,"date":"2026-11-01","time":"00:00:00","timestamp":"2026-11-01T00:00:00-03:00","venue":"La Bombonera","status":"NS","cond":"local"},
+    {"id":8,"liga":"Copa Sudamericana","round":"Octavos de final","home":"Boca Juniors","away":"Recoleta FC","homeScore":"4","awayScore":"0","date":"2026-08-18","time":"19:00:00","timestamp":"2026-08-18T19:00:00-03:00","venue":"Asunción","status":"FT","cond":"visita"}
   ]
 }

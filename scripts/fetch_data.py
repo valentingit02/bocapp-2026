@@ -1,162 +1,228 @@
 #!/usr/bin/env python3
 """
-fetch_data.py  -  Descarga el fixture real desde TheSportsDB y genera data/data.json
-NO hay datos hardcodeados: todo se resuelve por la API.
+fetch_data.py  ·  Motor de datos con API-FOOTBALL (fechas y horarios fidedignos)
 
-Uso local:   python scripts/fetch_data.py
-En GitHub:   lo corre solo el workflow .github/workflows/update-data.yml
+Genera automaticamente:
+  - data/data.json      -> fixture del equipo (proximos + jugados) con fecha/hora exacta
+  - data/brackets.json  -> cuadros de eliminatorias de las copas, armados solos
+
+Fuente: API-FOOTBALL (api-sports.io). Tier gratis 100 req/dia.
+La API key se lee de la variable de entorno APIFOOTBALL_KEY (secret de GitHub).
+Si no hay key, cae a TheSportsDB para no romper (menos preciso).
+
+NADA hardcodeado: todo sale de la API. Fechas ya vienen en hora de Argentina
+porque pedimos timezone=America/Argentina/Buenos_Aires.
 """
 
 import json, os, sys, time, urllib.request, urllib.parse
 from datetime import datetime, timezone
 
-# ---------------------------------------------------------------------------
-# CONFIG  (cambiá solo estas 3 cosas para adaptarlo a otro equipo)
-# ---------------------------------------------------------------------------
-API_KEY   = os.environ.get("TSDB_KEY", "3")          # "3" = clave de test gratuita
-TEAM_NAME = os.environ.get("TEAM_NAME", "Boca Juniors")
-COUNTRY   = os.environ.get("COUNTRY", "Argentina")   # para desambiguar homónimos
+# ------------------------- CONFIG -------------------------
+API_KEY  = os.environ.get("APIFOOTBALL_KEY", "").strip()
+TEAM_ID  = os.environ.get("TEAM_ID", "451")          # 451 = Boca Juniors en API-Football
+TEAM_NAME= os.environ.get("TEAM_NAME", "Boca Juniors")
+SEASON   = os.environ.get("SEASON", "2026")
+TZ       = "America/Argentina/Buenos_Aires"
 
-# Ligas/temporada a traer completas (id de liga en TheSportsDB, temporada)
-# Estos IDs se auto-descubren por nombre más abajo; si falla, se ignora la liga.
-SEASON = os.environ.get("SEASON", "2026")
-LEAGUE_NAMES = [
-    "Argentine Liga Profesional",
-    "Argentine Primera Division",
-    "Copa Argentina",
-    "CONMEBOL Sudamericana",
-    "Copa Sudamericana",
-]
+# Ligas/copas a seguir  (id de liga en API-Football)
+#   128 = Liga Profesional Argentina
+#   130 = Copa Argentina
+#    11 = Copa Sudamericana
+#    13 = Copa Libertadores
+LEAGUES = {
+    "128": "Liga Profesional",
+    "130": "Copa Argentina",
+    "11":  "Copa Sudamericana",
+    "13":  "Copa Libertadores",
+}
+# Cuales de esas son copas (para armar cuadros)
+CUP_IDS = {"130", "11", "13"}
 
-BASE = f"https://www.thesportsdb.com/api/v1/json/{API_KEY}"
-OUT  = os.path.join(os.path.dirname(__file__), "..", "data", "data.json")
-
-
-def get(url):
-    """GET con reintentos simples y respeto del rate limit (max ~1 req/seg free)."""
-    for intento in range(3):
-        try:
-            req = urllib.request.Request(url, headers={"User-Agent": "boca-pro/1.0"})
-            with urllib.request.urlopen(req, timeout=20) as r:
-                data = json.loads(r.read().decode("utf-8"))
-            time.sleep(1.2)          # cortesía con la API gratuita
-            return data
-        except Exception as e:
-            print(f"  ! error {e} (intento {intento+1})", file=sys.stderr)
-            time.sleep(2)
-    return {}
+BASE = "https://v3.football.api-sports.io"
+HERE = os.path.dirname(__file__)
+OUT_DATA = os.path.join(HERE, "..", "data", "data.json")
+OUT_BRK  = os.path.join(HERE, "..", "data", "brackets.json")
 
 
-def buscar_equipo(nombre, pais):
-    d = get(f"{BASE}/searchteams.php?t={urllib.parse.quote(nombre)}")
-    teams = d.get("teams") or []
-    if not teams:
-        raise SystemExit(f"No se encontró el equipo '{nombre}'")
-    t = next((x for x in teams if (x.get("strCountry") or "") == pais), teams[0])
-    print(f"Equipo: {t['strTeam']}  (id {t['idTeam']}, liga {t.get('strLeague')})")
-    return t
+def api_get(path, params):
+    url = f"{BASE}{path}?" + urllib.parse.urlencode(params)
+    req = urllib.request.Request(url, headers={
+        "x-apisports-key": API_KEY,
+        "Accept": "application/json",
+    })
+    with urllib.request.urlopen(req, timeout=25) as r:
+        data = json.loads(r.read().decode("utf-8"))
+    # respeta rate-limit del plan free
+    time.sleep(6.5)
+    if data.get("errors"):
+        print("  ! API errors:", data["errors"], file=sys.stderr)
+    return data.get("response", [])
 
 
-def descubrir_ligas():
-    """Mapea nombre de liga -> idLeague usando el catálogo de ligas de la API."""
-    ids = {}
-    d = get(f"{BASE}/all_leagues.php")
-    for lg in d.get("leagues") or []:
-        nombre = lg.get("strLeague", "")
-        for wanted in LEAGUE_NAMES:
-            if wanted.lower() in nombre.lower():
-                ids[nombre] = lg["idLeague"]
-    print("Ligas detectadas:", ids)
-    return ids
-
-
-def eventos_temporada(id_liga, season):
-    d = get(f"{BASE}/eventsseason.php?id={id_liga}&s={season}")
-    return d.get("events") or []
-
-
-def prox_equipo(id_team):
-    d = get(f"{BASE}/eventsnext.php?id={id_team}")
-    return d.get("events") or []
-
-
-def ult_equipo(id_team):
-    d = get(f"{BASE}/eventslast.php?id={id_team}")
-    return d.get("results") or d.get("events") or []
-
-
-def normalizar(ev, team_name):
-    """Deja cada partido con un formato limpio y estable para el front."""
-    home = ev.get("strHomeTeam", "")
-    away = ev.get("strAwayTeam", "")
-    liga = ev.get("strLeague", "")
-    es_home = team_name.split()[0].lower() in home.lower()
-    neutral = "copa argentina" in liga.lower()
-    cond = "neutral" if neutral else ("local" if es_home else "visita")
+# ------------------------- FIXTURE DEL EQUIPO -------------------------
+def normaliza_fixture(fx):
+    f = fx["fixture"]; lg = fx["league"]; teams = fx["teams"]; goals = fx["goals"]
+    home = teams["home"]; away = teams["away"]
+    es_home = (home["id"] == int(TEAM_ID))
+    # local/visita/neutral: Copa Argentina se juega en cancha neutral
+    if lg["id"] in (130,):
+        cond = "neutral"
+    else:
+        cond = "local" if es_home else "visita"
     return {
-        "id": ev.get("idEvent"),
-        "liga": liga,
-        "ligaBadge": ev.get("strLeagueBadge"),
-        "home": home,
-        "away": away,
-        "homeBadge": ev.get("strHomeTeamBadge"),
-        "awayBadge": ev.get("strAwayTeamBadge"),
-        "homeScore": ev.get("intHomeScore"),
-        "awayScore": ev.get("intAwayScore"),
-        "date": ev.get("dateEvent"),
-        "time": ev.get("strTime"),
-        "timestamp": ev.get("strTimestamp"),
-        "venue": ev.get("strVenue"),
-        "round": ev.get("intRound"),
+        "id": f["id"],
+        "liga": lg["name"],
+        "ligaBadge": lg.get("logo"),
+        "round": lg.get("round"),
+        "home": home["name"],
+        "away": away["name"],
+        "homeBadge": home.get("logo"),
+        "awayBadge": away.get("logo"),
+        "homeScore": goals["home"],
+        "awayScore": goals["away"],
+        # fecha/hora EXACTA (ya en hora de Argentina por timezone=)
+        "date": f["date"][:10],
+        "time": f["date"][11:19],
+        "timestamp": f["date"],          # ISO con offset -03:00
+        "venue": (f.get("venue") or {}).get("name"),
+        "status": f["status"]["short"],  # NS, 1H, HT, FT, etc.
         "cond": cond,
-        "status": ev.get("strStatus"),
-        "postponed": ev.get("strPostponed"),
     }
 
 
-def involucra(ev, team_name):
-    n = team_name.split()[0].lower()
-    return n in (ev.get("strHomeTeam", "") + ev.get("strAwayTeam", "")).lower()
+def trae_fixture_equipo():
+    resp = api_get("/fixtures", {
+        "team": TEAM_ID, "season": SEASON, "timezone": TZ,
+    })
+    print(f"Fixture del equipo: {len(resp)} partidos")
+    return [normaliza_fixture(fx) for fx in resp]
 
 
+# ------------------------- CUADROS DE COPA -------------------------
+ORDEN_RONDAS = [
+    ("Round of 16", "Octavos de final"),
+    ("8th Finals",  "Octavos de final"),
+    ("Quarter-finals", "Cuartos de final"),
+    ("Semi-finals", "Semifinales"),
+    ("Final", "Final"),
+]
+
+def trae_cuadro(league_id, nombre):
+    """Arma el bracket de una copa agrupando fixtures por ronda."""
+    resp = api_get("/fixtures", {
+        "league": league_id, "season": SEASON, "timezone": TZ,
+    })
+    if not resp:
+        return None
+    # agrupa por ronda cruda
+    por_ronda = {}
+    for fx in resp:
+        rnd = fx["league"].get("round", "")
+        por_ronda.setdefault(rnd, []).append(fx)
+
+    rondas = []
+    for clave_api, etiqueta in ORDEN_RONDAS:
+        # matchea rondas que contengan la clave (ej "Quarter-finals")
+        fixtures = []
+        for rnd, lst in por_ronda.items():
+            if clave_api.lower() in rnd.lower():
+                fixtures += lst
+        if not fixtures:
+            continue
+        # empareja ida/vuelta por par de equipos
+        llaves = _empareja(fixtures)
+        if llaves:
+            rondas.append({"nombre": etiqueta, "llaves": llaves})
+
+    if not rondas:
+        return None
+    return {
+        "id": nombre.lower().replace(" ", "-"),
+        "nombre": f"{nombre} {SEASON}",
+        "color": "#00a859" if "Sudamericana" in nombre else "#75aadb",
+        "final": {"sede": "", "fecha": ""},
+        "rondas": rondas,
+    }
+
+
+def _empareja(fixtures):
+    """Junta ida y vuelta de la misma llave y calcula global + ganador."""
+    pares = {}
+    for fx in fixtures:
+        h = fx["teams"]["home"]["name"]; a = fx["teams"]["away"]["name"]
+        key = "__".join(sorted([h, a]))
+        pares.setdefault(key, []).append(fx)
+
+    llaves = []
+    for key, lst in pares.items():
+        equipos = key.split("__")
+        eqA, eqB = equipos[0], equipos[1]
+        gA = gB = 0; jugados = 0; detalle = []
+        for fx in lst:
+            gh, ga = fx["goals"]["home"], fx["goals"]["away"]
+            if gh is None:
+                continue
+            jugados += 1
+            h = fx["teams"]["home"]["name"]
+            if h == eqA:
+                gA += gh; gB += ga
+            else:
+                gB += gh; gA += ga
+            detalle.append(f'{fx["teams"]["home"]["name"]} {gh}-{ga} {fx["teams"]["away"]["name"]}')
+        ganador = ""
+        if jugados == len(lst) and lst and gA != gB:
+            ganador = eqA if gA > gB else eqB
+        llaves.append({
+            "a": eqA, "b": eqB,
+            "ga": str(gA) if jugados else "",
+            "gb": str(gB) if jugados else "",
+            "ganador": ganador,
+            "boca": (TEAM_NAME.split()[0].lower() in key.lower()),
+            "detalle": " · ".join(detalle) if detalle else "Por jugarse",
+        })
+    # Boca primero
+    llaves.sort(key=lambda x: (not x["boca"]))
+    return llaves
+
+
+# ------------------------- MAIN -------------------------
 def main():
-    equipo = buscar_equipo(TEAM_NAME, COUNTRY)
-    ligas  = descubrir_ligas()
+    if not API_KEY:
+        print("!! Falta APIFOOTBALL_KEY. Configurá el secret en GitHub.", file=sys.stderr)
+        sys.exit(1)
 
-    todos = {}   # dedup por idEvent
-
-    # 1) Fixture completo de cada liga -> me quedo con los del equipo
-    for nombre, idl in ligas.items():
-        evs = eventos_temporada(idl, SEASON)
-        print(f"  {nombre}: {len(evs)} eventos de temporada")
-        for ev in evs:
-            if involucra(ev, TEAM_NAME):
-                todos[ev["idEvent"]] = ev
-
-    # 2) Próximos y últimos del equipo (cubre lo que la liga aún no publicó)
-    for ev in prox_equipo(equipo["idTeam"]) + ult_equipo(equipo["idTeam"]):
-        todos[ev["idEvent"]] = ev
-
-    partidos = [normalizar(ev, TEAM_NAME) for ev in todos.values()]
-    partidos.sort(key=lambda p: (p["timestamp"] or p["date"] or "9999"))
+    partidos = trae_fixture_equipo()
+    partidos.sort(key=lambda p: p["timestamp"] or "9999")
 
     salida = {
         "generatedAt": datetime.now(timezone.utc).isoformat(),
-        "team": {
-            "id": equipo["idTeam"],
-            "name": equipo["strTeam"],
-            "badge": equipo.get("strBadge"),
-            "stadium": equipo.get("strStadium"),
-        },
+        "team": {"id": TEAM_ID, "name": TEAM_NAME},
         "season": SEASON,
+        "source": "API-Football",
         "count": len(partidos),
         "matches": partidos,
     }
-
-    os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    with open(OUT, "w", encoding="utf-8") as f:
+    os.makedirs(os.path.dirname(OUT_DATA), exist_ok=True)
+    with open(OUT_DATA, "w", encoding="utf-8") as f:
         json.dump(salida, f, ensure_ascii=False, indent=2)
-    print(f"OK -> {OUT}  ({len(partidos)} partidos)")
+    print(f"OK data.json -> {len(partidos)} partidos")
+
+    # Cuadros de copa (solo las que Boca juega este año)
+    torneos = []
+    for lid in CUP_IDS:
+        nombre = LEAGUES.get(lid, "Copa")
+        try:
+            t = trae_cuadro(lid, nombre)
+            if t:
+                torneos.append(t)
+                print(f"OK cuadro {nombre}: {len(t['rondas'])} rondas")
+        except Exception as e:
+            print(f"  ! cuadro {nombre} fallo: {e}", file=sys.stderr)
+
+    with open(OUT_BRK, "w", encoding="utf-8") as f:
+        json.dump({"generatedAt": salida["generatedAt"], "torneos": torneos},
+                  f, ensure_ascii=False, indent=2)
+    print(f"OK brackets.json -> {len(torneos)} torneos")
 
 
 if __name__ == "__main__":

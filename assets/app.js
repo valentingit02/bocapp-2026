@@ -52,7 +52,7 @@ function card(m, fin){
   const lb = m.ligaBadge ? `<img src="${m.ligaBadge}" onerror="this.remove()">` : "";
   const venue = m.venue ? `📍 ${m.venue}` : (m.cond==="local" ? "📍 La Bombonera" : "📍 Estadio a confirmar");
   return `<div class="match">
-    <div class="comp-strip">${lb}${m.liga||"Partido"}${m.round?` · Fecha ${m.round}`:""}</div>
+    <div class="comp-strip">${lb}${m.liga||"Partido"}${m.round?` · ${m.round}`:""}</div>
     <div class="whenbox">
       ${fin ? '<div class="hh" style="font-size:12px;color:var(--muted)">FIN</div>'
             : `<div class="hh">${w.hh}</div>`}
