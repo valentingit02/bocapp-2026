@@ -36,11 +36,13 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "mode=${{ github.event.inputs.mode }}" >> $GITHUB_OUTPUT
+            echo "heavy=1" >> $GITHUB_OUTPUT
           else
             H=$(date -u +%H)
             case "$H" in
-              00|06|12|18) echo "mode=full" >> $GITHUB_OUTPUT ;;
-              *)           echo "mode=live" >> $GITHUB_OUTPUT ;;
+              00|06|18) echo "mode=full"  >> $GITHUB_OUTPUT; echo "heavy=0" >> $GITHUB_OUTPUT ;;
+              12)       echo "mode=full"  >> $GITHUB_OUTPUT; echo "heavy=1" >> $GITHUB_OUTPUT ;;
+              *)        echo "mode=live"  >> $GITHUB_OUTPUT; echo "heavy=0" >> $GITHUB_OUTPUT ;;
             esac
           fi
 
@@ -49,8 +51,11 @@ jobs:
           APIFOOTBALL_KEY: ${{ secrets.APIFOOTBALL_KEY }}
           SEASON: '2026'
           MODE: ${{ steps.mode.outputs.mode }}
+          HEAVY: ${{ steps.mode.outputs.heavy }}
+          DETALLE_PARTIDOS: '2'
+          TEAM_ID: '451'
         run: |
-          echo "MODE=$MODE"
+          echo "MODE=$MODE HEAVY=$HEAVY"
           python scripts/fetch_data.py
 
       - name: Commitear cambios

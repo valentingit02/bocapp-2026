@@ -1,5 +1,5 @@
 :root{
-  --bg:#eef1f7; --card:#fff; --ink:#12203f; --muted:#6b7896;
+  --bg:#eef1f7; --card:#fff; --card2:#f0f3fa; --ink:#12203f; --txt:#12203f; --muted:#6b7896;
   --azul:#0a2472; --azul2:#123fb0; --oro:#ffcb05; --line:#e6e9f2;
   --local:#12a150; --visita:#e8590c; --neutral:#7048e8; --live:#e5383b;
   --shadow:0 1px 3px rgba(20,32,63,.08),0 8px 24px rgba(20,32,63,.07);
@@ -181,3 +181,63 @@ button,.tab,.chip,.pick,.tbl-tab,.stat-tab,.brk-tab,.row{touch-action:manipulati
 .match.is-boca{border-left:3px solid var(--oro)}
 .whenbox .live{color:var(--live);font-weight:900;font-size:12px;animation:blink 1s infinite}
 @keyframes blink{50%{opacity:.45}}
+
+/* ====== TOOLBAR + botones header ====== */
+.head-btns{display:flex;gap:6px}
+.hbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;
+  width:38px;height:38px;border-radius:10px;font-size:16px;cursor:pointer}
+.hbtn:active{transform:scale(.94)}
+.toolbar{max-width:980px;margin:0 auto;display:flex;gap:8px;align-items:center;padding:0 18px 12px;flex-wrap:wrap}
+.search{flex:1;min-width:140px;border:none;border-radius:10px;padding:9px 12px;font-size:14px;background:rgba(255,255,255,.95)}
+.favsel{border:none;border-radius:10px;padding:9px 10px;font-size:13px;font-weight:700;background:var(--oro);color:var(--azul);max-width:150px}
+.toolbar .upd{color:#cfe0ff;position:static}
+
+/* ====== acciones en tarjeta ====== */
+.mrow-actions{grid-column:1/-1;display:flex;gap:6px;justify-content:flex-end;margin-top:6px}
+.mini{background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:8px;
+  padding:4px 10px;font-size:13px;cursor:pointer}
+.mini:active{transform:scale(.94)}
+.hasdet{background:var(--azul2);color:#cfe0ff;padding:2px 7px;border-radius:5px;font-size:10px}
+.cd-ics{background:var(--oro);border:none;color:var(--azul);border-radius:10px;width:40px;height:40px;font-size:18px;cursor:pointer;flex-shrink:0}
+
+/* ====== modal ficha ====== */
+.modal{position:fixed;inset:0;background:rgba(6,10,25,.6);display:none;align-items:flex-end;justify-content:center;z-index:300;backdrop-filter:blur(3px)}
+.modal.show{display:flex}
+.modal-card{background:var(--card);width:100%;max-width:640px;max-height:85vh;overflow-y:auto;
+  border-radius:18px 18px 0 0;padding:20px 18px calc(24px + env(safe-area-inset-bottom));position:relative;box-shadow:0 -8px 30px rgba(0,0,0,.4)}
+.modal-x{position:absolute;top:14px;right:14px;background:var(--card2);border:1px solid var(--line);color:var(--txt);
+  width:32px;height:32px;border-radius:50%;font-size:18px;font-weight:900;cursor:pointer}
+.modal-h{color:var(--azul);margin:16px 0 8px;font-size:14px;border-bottom:2px solid var(--line);padding-bottom:5px}
+.ev{display:flex;gap:10px;align-items:center;padding:6px 0;font-size:13px;border-bottom:1px solid var(--line)}
+.ev-min{background:var(--card2);border-radius:6px;padding:2px 7px;font-weight:800;font-size:11px;min-width:34px;text-align:center}
+.forms{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-eq{font-weight:800;color:var(--azul);font-size:13px;margin-bottom:6px}
+.form-p{font-size:12.5px;padding:3px 0;border-bottom:1px dashed var(--line)}
+
+/* ====== descensos ====== */
+.zona-desc{border-left:3px solid var(--live)}
+tr.desc-row{background:rgba(229,56,59,.07)}
+
+/* ====== MODO OSCURO ====== */
+body.dark{--bg:#0b1020;--card:#141c33;--card2:#1b2543;--ink:#eef2ff;--txt:#eef2ff;--muted:#93a0c4;--line:#26314f}
+body.dark .search{background:#1b2543;color:#eef2ff}
+body.dark table.pos th{background:#1b2543}
+body.dark .tie .det,body.dark table.pos td.eq{color:inherit}
+body.dark .rank-row:hover,body.dark table.pos tr:hover,body.dark .tie .row:hover{background:#1b2543}
+body.dark .boca-row,body.dark tr.boca-row{background:rgba(255,203,5,.10)}
+body.dark .tabla-head,body.dark .rank-head,body.dark .simbox h4,body.dark .modal-h{color:#7ea2ff}
+
+/* ====== VISTA COMPACTA ====== */
+body.compact .match{padding:8px 12px;gap:8px}
+body.compact .side{font-size:13px;gap:6px}
+body.compact .side img{width:18px;height:18px}
+body.compact .venue,body.compact .mrow-actions{display:none}
+body.compact .comp-strip{margin-bottom:3px;font-size:10px}
+body.compact .whenbox .hh{font-size:15px}
+
+/* ====== ios banner ====== */
+.ios-banner{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));
+  background:#123fb0;color:#fff;border:1px solid #ffcb05;border-radius:14px;padding:12px 14px;
+  box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:13px;z-index:200;gap:10px;align-items:center}
+.ios-banner img{width:40px;height:40px;border-radius:9px;flex-shrink:0}
+.ios-banner button{background:transparent;border:none;color:#ffcb05;font-size:20px;font-weight:900;cursor:pointer}

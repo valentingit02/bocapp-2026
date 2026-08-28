@@ -57,6 +57,10 @@ ORDEN_RONDAS = [
 # Orden de cruces de playoff de la Liga (1A-8B, 2A-7B, ...) — bracket estándar
 CRUCES_LIGA = [(1, 8), (4, 5), (2, 7), (3, 6)]
 
+# Equipo a seguir para detalles ampliados (ficha de partido)
+BOCA_ID = os.environ.get("TEAM_ID", "451")
+DETALLE_PARTIDOS = int(os.environ.get("DETALLE_PARTIDOS", "0"))  # cuantos partidos de Boca detallar
+
 
 def api_get(path, params):
     url = f"{BASE}{path}?" + urllib.parse.urlencode(params)
@@ -242,6 +246,97 @@ def proyeccion_liga(standings_ligas):
     }
 
 
+# -------------------------------------- TABLA ANUAL / PROMEDIOS / DESCENSOS
+def tabla_anual_y_promedios(comps):
+    """Calcula tabla anual (todos los partidos de Liga jugados) y promedios,
+    SIN requests extra: usa los fixtures de la Liga ya bajados.
+    Nota: para promedios reales de descenso hace falta historial de temporadas
+    anteriores; acá calculamos con lo disponible en la temporada actual."""
+    liga = next((c for c in comps if c["id"] == LIGA_ID), None)
+    if not liga:
+        return None
+    tab = {}  # equipo -> stats
+    for m in liga["matches"]:
+        if m["homeScore"] is None or m["awayScore"] is None:
+            continue
+        h, a = m["home"], m["away"]
+        gh, ga = m["homeScore"], m["awayScore"]
+        for eq in (h, a):
+            tab.setdefault(eq, {"equipo": eq, "logo": m["homeLogo"] if eq == h else m["awayLogo"],
+                                "pj": 0, "g": 0, "e": 0, "p": 0, "gf": 0, "gc": 0, "pts": 0,
+                                "boca": es_boca(eq)})
+        tab[h]["pj"] += 1; tab[a]["pj"] += 1
+        tab[h]["gf"] += gh; tab[h]["gc"] += ga
+        tab[a]["gf"] += ga; tab[a]["gc"] += gh
+        if gh > ga:
+            tab[h]["g"] += 1; tab[h]["pts"] += 3; tab[a]["p"] += 1
+        elif ga > gh:
+            tab[a]["g"] += 1; tab[a]["pts"] += 3; tab[h]["p"] += 1
+        else:
+            tab[h]["e"] += 1; tab[a]["e"] += 1; tab[h]["pts"] += 1; tab[a]["pts"] += 1
+    filas = list(tab.values())
+    for r in filas:
+        r["dg"] = r["gf"] - r["gc"]
+        r["prom"] = round(r["pts"] / r["pj"], 3) if r["pj"] else 0
+    anual = sorted(filas, key=lambda r: (-r["pts"], -r["dg"], -r["gf"]))
+    for i, r in enumerate(anual): r["pos"] = i + 1
+    promedios = sorted(filas, key=lambda r: (r["prom"], r["pts"]))  # peor promedio primero
+    for i, r in enumerate(promedios): r["pos"] = i + 1
+    n = len(promedios)
+    # marca descensos (2 peores promedios) y clasificacion a copas 2027 (referencial)
+    for i, r in enumerate(promedios):
+        r["desciende"] = (i < 2)
+    for i, r in enumerate(anual):
+        r["copa2027"] = "Libertadores" if i == 0 else ("Sudamericana" if i < 7 else "")
+    return {"anual": anual, "promedios": promedios, "totalEquipos": n}
+
+
+# ---------------------------------------------------------------- FICHA PARTIDO
+def detalles_boca(comps):
+    """Baja eventos+formaciones SOLO de los proximos/ultimos partidos de Boca.
+    Controlado por DETALLE_PARTIDOS para cuidar el presupuesto de requests."""
+    if DETALLE_PARTIDOS <= 0:
+        return {}
+    liga_ids = set(COMPS.keys())
+    boca_matches = []
+    for c in comps:
+        for m in c["matches"]:
+            if m["boca"]:
+                boca_matches.append(m)
+    # priorizo: el mas proximo no jugado + el ultimo jugado
+    jugados = [m for m in boca_matches if m["status"] in ("FT", "AET", "PEN")]
+    prox = [m for m in boca_matches if m["status"] == "NS"]
+    prox.sort(key=lambda m: m["timestamp"] or "9999")
+    jugados.sort(key=lambda m: m["timestamp"] or "", reverse=True)
+    elegidos = (prox[:1] + jugados[:1])[:DETALLE_PARTIDOS]
+    out = {}
+    for m in elegidos:
+        fid = m["id"]
+        det = {"eventos": [], "formaciones": []}
+        try:
+            ev = api_get("/fixtures/events", {"fixture": fid})
+            for e in ev:
+                det["eventos"].append({
+                    "min": e["time"]["elapsed"], "tipo": e["type"], "detalle": e.get("detail"),
+                    "equipo": e["team"]["name"], "jugador": (e.get("player") or {}).get("name"),
+                    "asist": (e.get("assist") or {}).get("name"),
+                })
+        except Exception as e:
+            print(f"  ! eventos {fid}: {e}", file=sys.stderr)
+        try:
+            lu = api_get("/fixtures/lineups", {"fixture": fid})
+            for L in lu:
+                det["formaciones"].append({
+                    "equipo": L["team"]["name"], "esquema": L.get("formation"),
+                    "titulares": [p["player"]["name"] for p in (L.get("startXI") or [])],
+                })
+        except Exception as e:
+            print(f"  ! lineups {fid}: {e}", file=sys.stderr)
+        out[str(fid)] = det
+    print(f"OK detalles: {len(out)} partidos de Boca")
+    return out
+
+
 # ---------------------------------------------------------------- RANKINGS
 def _fila_pl(item, campo):
     pl = item["player"]; st = item["statistics"][0]
@@ -323,13 +418,33 @@ def main():
     with open(D("brackets.json"), "w", encoding="utf-8") as f:
         json.dump({"generatedAt": now, "torneos": torneos}, f, ensure_ascii=False, indent=2)
 
+    # Tabla anual + promedios + descensos + clasificacion 2027 (0 requests)
     try:
-        rk = trae_rankings()
-        with open(D("stats.json"), "w", encoding="utf-8") as f:
-            json.dump({"generatedAt": now, "liga": "Liga Profesional", "season": SEASON, **rk},
-                      f, ensure_ascii=False, indent=2)
+        anual = tabla_anual_y_promedios(comps)
+        if anual:
+            with open(D("anual.json"), "w", encoding="utf-8") as f:
+                json.dump({"generatedAt": now, **anual}, f, ensure_ascii=False, indent=2)
+            print("OK anual.json (tabla anual + promedios + descensos)")
     except Exception as e:
-        print(f"  ! rankings: {e}", file=sys.stderr)
+        print(f"  ! anual: {e}", file=sys.stderr)
+
+    # Rankings (solo en corrida "heavy")
+    if os.environ.get("HEAVY", "0") == "1":
+        try:
+            rk = trae_rankings()
+            with open(D("stats.json"), "w", encoding="utf-8") as f:
+                json.dump({"generatedAt": now, "liga": "Liga Profesional", "season": SEASON, **rk},
+                          f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            print(f"  ! rankings: {e}", file=sys.stderr)
+        # Fichas de partido de Boca
+        try:
+            det = detalles_boca(comps)
+            if det:
+                with open(D("details.json"), "w", encoding="utf-8") as f:
+                    json.dump({"generatedAt": now, "partidos": det}, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            print(f"  ! detalles: {e}", file=sys.stderr)
 
     print("MODE=full listo.")
 

@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Fútbol Argentino 2026 · En vivo</title>
-
-<!-- PWA / iPhone -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0a2472">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
@@ -14,52 +12,63 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Fútbol AR">
-
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 <header>
   <div class="head-in">
     <div class="crest" id="crest">⚽</div>
-    <div><h1 id="title">Fútbol Argentino 2026 <small>EN VIVO · TODAS LAS COPAS</small></h1></div>
-    <div class="upd" id="updated">Cargando…</div>
+    <div style="flex:1;min-width:0">
+      <h1 id="title">Fútbol Argentino 2026 <small>EN VIVO · TODAS LAS COPAS</small></h1>
+    </div>
+    <div class="head-btns">
+      <button class="hbtn" id="btnDark" title="Modo oscuro">🌙</button>
+      <button class="hbtn" id="btnCompact" title="Vista compacta">▦</button>
+    </div>
   </div>
-  <!-- selector de competencia -->
+  <div class="toolbar">
+    <input id="search" class="search" placeholder="🔎 Buscar equipo…">
+    <select id="favSel" class="favsel" title="Equipo favorito"></select>
+    <span class="upd" id="updated">Cargando…</span>
+  </div>
   <div class="comptabs" id="comptabs"></div>
 </header>
 
 <div class="wrap">
   <div class="countdown" id="countdown" style="display:none">
-    <div>
-      <div class="lbl">⏱ Próximo partido de Boca</div>
+    <div style="flex:1;min-width:0">
+      <div class="lbl">⏱ Próximo partido de tu equipo</div>
       <div class="mt">—</div>
       <div class="sub" style="font-size:12px;color:#cfe0ff"></div>
     </div>
     <div class="clk" id="cdClock">--:--:--</div>
+    <button class="cd-ics" id="cdIcs" title="Agregar al calendario">📅</button>
   </div>
 
-  <!-- subpestañas (partidos / tabla / cuadro / figuras) -->
   <div class="subtabs" id="subtabs"></div>
-
-  <!-- panel dinamico -->
   <div id="panel"><div class="state"><div class="spin"></div>Cargando…</div></div>
-
   <button class="chip" id="btnRefresh" style="margin-top:14px">🔄 Actualizar</button>
 </div>
 
 <footer>
   Datos reales de <a href="https://www.api-football.com" target="_blank">API-Football</a> ·
-  actualización automática cada hora vía GitHub Actions · Playoffs de Liga calculados por clasificación · 100% gratis.
+  actualización automática cada hora vía GitHub Actions · Playoffs, anual, promedios y descensos calculados ·
+  100% gratis, sin backend.
 </footer>
 
+<!-- Modal ficha de partido -->
+<div id="modal" class="modal">
+  <div class="modal-card">
+    <button class="modal-x" onclick="window._closeModal()">×</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
 <!-- Banner iOS -->
-<div id="iosBanner" style="display:none;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));
-  background:#123fb0;color:#fff;border:1px solid #ffcb05;border-radius:14px;padding:12px 14px;
-  box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:13px;z-index:200;display:flex;gap:10px;align-items:center">
-  <img src="assets/icons/apple-touch-icon.png" style="width:40px;height:40px;border-radius:9px;flex-shrink:0">
+<div id="iosBanner" class="ios-banner" style="display:none">
+  <img src="assets/icons/apple-touch-icon.png">
   <div style="flex:1">Instalá la app: tocá <b>Compartir</b> y luego <b>«Agregar a inicio»</b> 📲</div>
-  <button onclick="document.getElementById('iosBanner').style.display='none';localStorage.setItem('iosBannerOff','1')"
-    style="background:transparent;border:none;color:#ffcb05;font-size:20px;font-weight:900;cursor:pointer">×</button>
+  <button onclick="document.getElementById('iosBanner').style.display='none';localStorage.setItem('iosBannerOff','1')">×</button>
 </div>
 
 <script src="assets/app.js"></script>

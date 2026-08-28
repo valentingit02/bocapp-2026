@@ -1,48 +1,51 @@
-# ⚽ Fútbol Argentino 2026 · App INTEGRAL (versión final)
+# ⚽ Fútbol Argentino 2026 · App COMPLETA (todas las mejoras)
 
-App multi-competencia con datos reales en vivo, automática, para iPhone.
+App integral, en vivo, automática, para iPhone. Presupuesto: ~55 requests/día (límite 100).
 
-## Qué trae ahora
-Selector de 4 competencias, cada una con TODOS sus partidos (no solo Boca):
-- **Liga Profesional** (Zona A y B): partidos, tabla por zona, 👟 figuras (goles/asist/amarillas)
-  y **🧮 Playoffs proyectados**: la app CALCULA los cruces de octavos según la tabla,
-  con desempate (pts → diferencia de gol → goles a favor), y podés simular hasta la final.
-- **Copa Argentina**: partidos + cuadro de eliminación.
-- **Copa Sudamericana**: partidos + tabla de grupos + cuadro.
-- **Copa Libertadores**: partidos + tabla de grupos + cuadro.
-Boca aparece resaltado ⭐ en todos lados. Cuenta regresiva al próximo partido de Boca.
-Marcadores en vivo (●) que refrescan solos.
+## ✅ TODO lo incluido
 
-## Cómo se mantiene solo (sin pasar los 100 req/día)
-El robot corre CADA HORA y elige el modo por la hora (UTC):
-- **00, 06, 12, 18 h → full**: baja los 4 fixtures + 3 tablas + 3 rankings (~10 req).
-- **resto → live**: 1 request (/fixtures?live=all) para marcadores en vivo.
-- **Total ~60 requests/día** (límite 100). Los playoffs de Liga se recalculan solos
-  en cada corrida full, según cómo va la tabla.
+### Datos (4 competencias completas)
+- Liga Profesional, Copa Argentina, Copa Sudamericana, Copa Libertadores.
+- Todos los partidos (no solo Boca), con fecha/hora exactas en hora AR.
+- Tablas: Liga por Zona A/B, y grupos de las copas.
+- 🧮 **Playoffs de Liga proyectados**: cruces calculados por clasificación con
+  desempate (pts → dif. gol → goles a favor). Simulables hasta la final.
+- 📅 **Tabla anual + Promedios + Descensos** (se calcula de los partidos jugados).
+- Clasificación a copas 2027 marcada en la tabla anual.
+- 👟 Figuras: goleadores, asistidores, amarillas.
+- ⓘ **Ficha de partido** de Boca: eventos (goles/tarjetas/cambios) y formaciones.
+- Marcadores **en vivo** (●) que refrescan solos cada minuto.
 
-## Instalar en iPhone
-1. Abrí la URL en **Safari**.
-2. **Compartir** → **«Agregar a inicio»**. Queda con ícono, a pantalla completa.
+### Experiencia
+- 🔎 **Buscador de equipo** (filtra partidos por nombre).
+- ⭐ **Equipo favorito** configurable (resalta y arma la cuenta regresiva).
+- 🌙 **Modo oscuro** / claro (se recuerda).
+- ▦ **Vista compacta** / detallada.
+- 📅 **Agregar al calendario** (.ics con recordatorio 1h antes).
+- ↗ **Compartir** partido (WhatsApp / hoja nativa de iOS).
+- ⏱ Cuenta regresiva al próximo partido de tu equipo.
 
-## Archivos de datos (los genera el robot)
-- data/fixtures.json   -> partidos de las 4 competencias
-- data/standings.json  -> tablas (liga + grupos de copas)
-- data/brackets.json   -> cuadros de copa + proyección de playoffs de Liga
-- data/stats.json      -> goleadores / asistidores / amarillas
-- data/live.json       -> partidos en vivo
+### iPhone
+- Instalable (PWA): Safari → Compartir → «Agregar a inicio».
+- Ícono propio, pantalla completa, respeta el notch, funciona offline.
 
-## Pasos para actualizar tu repo
+## 🔋 Presupuesto de requests (para no pasar 100/día)
+El robot corre CADA HORA y elige modo por la hora (UTC):
+- 00,06,18 h → full liviano: 4 fixtures + 3 tablas = 7 req.
+- 12 h → full+heavy: lo anterior + 3 rankings + fichas de 2 partidos de Boca = 14 req.
+- resto → live: 1 req (/fixtures?live=all).
+Total ≈ 55 req/día. Tabla anual, promedios, descensos, buscador, modo oscuro,
+favoritos, calendario, compartir, simuladores = 0 requests (navegador o cálculo).
+
+## 🚀 Subir al repo
 ```powershell
 cd C:\Users\valen\bocapp-2026
-# borrá el data.json viejo si existe (cambió el formato):
-del data\data.json
-# copiá TODO lo del ZIP reemplazando
+del data\data.json    2>$null
 git add .
-git commit -m "app integral: 4 competencias + playoffs Liga calculados"
+git commit -m "app completa: todas las mejoras (anual, promedios, ficha, dark, favoritos, calendario)"
 git push
 ```
 Luego: Actions → Run workflow (mode: full) para poblar todo con datos reales.
 
-## Config
-- Requiere el secret APIFOOTBALL_KEY (ya lo tenés).
-- IDs de liga usados: 128 Liga, 130 Copa Arg, 11 Sudamericana, 13 Libertadores.
+## Archivos de datos (los genera el robot)
+fixtures.json · standings.json · brackets.json · stats.json · live.json · anual.json · details.json

@@ -1,5 +1,5 @@
 /* Service Worker · cache para carga rapida y uso offline en iPhone */
-const CACHE = "boca-2026-v5";
+const CACHE = "boca-2026-v6";
 const ASSETS = [
   "./",
   "./index.html",
