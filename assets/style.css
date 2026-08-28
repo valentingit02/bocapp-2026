@@ -73,3 +73,30 @@ footer{max-width:980px;margin:26px auto 0;padding:16px 18px;color:var(--muted);f
 a{color:var(--azul2)}
 code{background:#e6eaf3;padding:1px 6px;border-radius:5px}
 @media(max-width:560px){.match{grid-template-columns:56px 1fr}.badge{grid-column:2}}
+
+/* ====== CUADROS / BRACKET ====== */
+.brk-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.brk-tab{background:#fff;border:1px solid var(--line);color:var(--muted);padding:8px 15px;
+  border-radius:999px;cursor:pointer;font-weight:800;font-size:13px}
+.brk-tab.on{background:var(--azul);color:#fff;border-color:var(--azul)}
+.brk-info{background:#fff;border-radius:11px;box-shadow:var(--shadow);padding:12px 15px;margin-bottom:14px;
+  font-size:13px;border-left:4px solid var(--oro)}
+.brk-info b{color:var(--azul)}
+.brk-hint{font-size:12px;color:var(--muted);margin-bottom:10px}
+.bracket{display:flex;gap:22px;overflow-x:auto;padding:6px 2px 18px}
+.round{min-width:220px;display:flex;flex-direction:column;justify-content:space-around;gap:14px}
+.round h3{font-size:11px;text-transform:uppercase;letter-spacing:1.3px;color:var(--muted);
+  text-align:center;margin-bottom:4px;font-weight:800}
+.tie{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+.tie.boca{border:2px solid var(--oro)}
+.tie .row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 11px;
+  font-size:13px;font-weight:700;cursor:pointer;border-bottom:1px solid var(--line);transition:.12s}
+.tie .row:last-of-type{border-bottom:none}
+.tie .row:hover{background:#f4f6fc}
+.tie .row.win{background:#fff8dd;color:#7a5c00}
+.tie .row.lose{color:var(--muted);opacity:.6}
+.tie .row.empty{color:#b9c1d6;font-style:italic;cursor:default}
+.tie .sc{font-weight:900;font-size:13px;min-width:34px;text-align:right}
+.tie .det{font-size:10px;color:var(--muted);padding:6px 11px;background:#f7f9fd;border-top:1px solid var(--line)}
+.champ-box{display:none;margin-top:16px;text-align:center;background:linear-gradient(120deg,var(--oro),#e6b400);
+  color:var(--azul);font-weight:900;padding:16px;border-radius:12px;font-size:17px}

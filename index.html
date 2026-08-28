@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Boca 2026 · Fixture real + Simulador</title>
+<title>Boca 2026 · Fixture real + Cuadros + Simulador</title>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -28,7 +28,8 @@
   <div class="tabs">
     <div class="tab active" data-v="prox">📅 Próximos</div>
     <div class="tab" data-v="result">✅ Resultados</div>
-    <div class="tab" data-v="sim">🎮 Simulador de copa</div>
+    <div class="tab" data-v="cuadros">🏆 Cuadros</div>
+    <div class="tab" data-v="sim">🎮 Simulador</div>
   </div>
 
   <section class="view active" id="prox">
@@ -41,20 +42,30 @@
     <div id="listResult"><div class="state">—</div></div>
   </section>
 
+  <!-- NUEVO: cuadros de eliminatorias interactivos -->
+  <section class="view" id="cuadros">
+    <div class="brk-tabs" id="brkTabs"></div>
+    <div class="brk-info" id="brkInfo"></div>
+    <div class="bracket" id="bracket"><div class="state"><div class="spin"></div>Cargando cuadros…</div></div>
+    <div class="champ-box" id="champBox"></div>
+    <button class="chip" id="brkReset" style="margin-top:12px">↺ Reiniciar simulación del cuadro</button>
+  </section>
+
   <section class="view" id="sim">
     <div class="simbox">
-      <h4>🎯 Simulá el camino de Boca en las copas</h4>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:6px">
-        Se arma con los partidos de copa reales del fixture. Marcá quién gana cada llave.</p>
-      <div id="simSteps"></div>
-      <div class="champ" id="champ"></div>
+      <h4>🎮 ¿Cómo simulo?</h4>
+      <p style="font-size:13.5px;color:var(--muted);line-height:1.7">
+        Andá a la pestaña <b>🏆 Cuadros</b> y tocá al equipo que creés que gana cada llave.
+        La app propaga automáticamente los ganadores ronda a ronda hasta la final,
+        y te muestra el <b>campeón simulado</b>. Las llaves con resultado real ya vienen
+        marcadas y no se pueden cambiar. Con <b>↺ Reiniciar</b> volvés a empezar.</p>
     </div>
   </section>
 </div>
 
 <footer>
   Datos reales de <a href="https://www.thesportsdb.com" target="_blank">TheSportsDB</a> ·
-  actualización automática vía GitHub Actions · 100% gratis, sin backend.
+  cuadros en <code>data/brackets.json</code> (editables) · actualización vía GitHub Actions · 100% gratis.
 </footer>
 
 <script src="assets/app.js"></script>
