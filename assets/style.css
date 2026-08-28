@@ -100,3 +100,84 @@ code{background:#e6eaf3;padding:1px 6px;border-radius:5px}
 .tie .det{font-size:10px;color:var(--muted);padding:6px 11px;background:#f7f9fd;border-top:1px solid var(--line)}
 .champ-box{display:none;margin-top:16px;text-align:center;background:linear-gradient(120deg,var(--oro),#e6b400);
   color:var(--azul);font-weight:900;padding:16px;border-radius:12px;font-size:17px}
+
+/* ====== TABLA DE POSICIONES ====== */
+.tbl-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.tbl-tab{background:#fff;border:1px solid var(--line);color:var(--muted);padding:8px 16px;
+  border-radius:999px;cursor:pointer;font-weight:800;font-size:13px}
+.tbl-tab.on{background:var(--azul);color:#fff;border-color:var(--azul)}
+.tabla-wrap{background:#fff;border-radius:13px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
+.tabla-head{padding:12px 15px;font-weight:800;color:var(--azul);border-bottom:2px solid var(--line);
+  display:flex;align-items:center;gap:8px;font-size:14px}
+table.pos{width:100%;border-collapse:collapse;font-size:13px}
+table.pos th{background:#f7f9fd;color:var(--muted);font-size:10.5px;text-transform:uppercase;
+  letter-spacing:.5px;padding:9px 6px;text-align:center;font-weight:800}
+table.pos th.eq{text-align:left;padding-left:12px}
+table.pos td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--line)}
+table.pos td.eq{text-align:left;padding-left:8px;font-weight:700;display:flex;align-items:center;gap:8px}
+table.pos td.eq img{width:20px;height:20px;object-fit:contain}
+table.pos td.pos-n{font-weight:900;color:var(--muted);width:26px}
+table.pos td.pts{font-weight:900;color:var(--azul);font-size:14px}
+table.pos tr.boca-row{background:#fff8dd}
+table.pos tr.boca-row td.eq{color:#7a5c00}
+table.pos tr:hover{background:#f4f6fc}
+.zona-lib{border-left:3px solid #12a150}
+.zona-sud{border-left:3px solid #e8590c}
+.forma{display:inline-flex;gap:2px}
+.forma span{width:15px;height:15px;border-radius:3px;font-size:9px;font-weight:900;color:#fff;
+  display:inline-grid;place-items:center}
+.f-W{background:#12a150}.f-D{background:#adb5bd}.f-L{background:#e5383b}
+.tbl-leyenda{font-size:11px;color:var(--muted);padding:10px 15px;display:flex;gap:16px;flex-wrap:wrap}
+.tbl-leyenda b{color:var(--ink)}
+@media(max-width:560px){table.pos .hide-m{display:none}}
+
+/* ====== RANKINGS: goleadores / asistidores / amarillas ====== */
+.stat-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.stat-tab{background:#fff;border:1px solid var(--line);color:var(--muted);padding:8px 15px;
+  border-radius:999px;cursor:pointer;font-weight:800;font-size:13px;display:flex;align-items:center;gap:6px}
+.stat-tab.on{background:var(--azul);color:#fff;border-color:var(--azul)}
+.rank-wrap{background:#fff;border-radius:13px;box-shadow:var(--shadow);overflow:hidden}
+.rank-head{padding:12px 15px;font-weight:800;color:var(--azul);border-bottom:2px solid var(--line);font-size:14px}
+.rank-row{display:grid;grid-template-columns:30px 40px 1fr auto;gap:10px;align-items:center;
+  padding:10px 14px;border-bottom:1px solid var(--line);transition:.12s}
+.rank-row:last-child{border-bottom:none}
+.rank-row:hover{background:#f4f6fc}
+.rank-row.boca-row{background:#fff8dd}
+.rank-pos{font-weight:900;color:var(--muted);text-align:center}
+.rank-pos.top1{color:#e6b400}.rank-pos.top2{color:#8a94a6}.rank-pos.top3{color:#cd7f32}
+.rank-foto{width:38px;height:38px;border-radius:50%;object-fit:cover;background:#eef1fb;border:2px solid var(--line)}
+.rank-info{display:flex;flex-direction:column;gap:2px;min-width:0}
+.rank-nombre{font-weight:800;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-eq{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.rank-eq img{width:15px;height:15px;object-fit:contain}
+.rank-val{display:flex;flex-direction:column;align-items:center;min-width:52px}
+.rank-num{font-size:22px;font-weight:900;line-height:1}
+.rank-num.goles{color:#12a150}.rank-num.asist{color:#123fb0}.rank-num.amaril{color:#e6b400}
+.rank-lbl{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+.rank-pj{font-size:10.5px;color:var(--muted);margin-top:2px}
+.card-amar{width:13px;height:17px;background:#ffcb05;border-radius:2px;display:inline-block;vertical-align:middle;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+
+/* ====== iPhone / PWA: respetar notch y barra inferior ====== */
+header{padding-top:env(safe-area-inset-top)}
+.head-in{padding-left:calc(18px + env(safe-area-inset-left));
+  padding-right:calc(18px + env(safe-area-inset-right))}
+body{padding-bottom:calc(60px + env(safe-area-inset-bottom))}
+/* mejor tacto en iOS: evitar zoom raro y resaltados azules */
+*{-webkit-tap-highlight-color:transparent}
+button,.tab,.chip,.pick,.tbl-tab,.stat-tab,.brk-tab,.row{touch-action:manipulation}
+/* scroll suave en iOS */
+.bracket,.tabs{-webkit-overflow-scrolling:touch}
+
+/* ====== NAV multi-competencia ====== */
+.comptabs{display:flex;gap:0;max-width:980px;margin:0 auto;padding:0 8px;overflow-x:auto}
+.comptab{flex:1;white-space:nowrap;text-align:center;padding:11px 12px;cursor:pointer;
+  font-weight:800;font-size:12.5px;color:#cfe0ff;border-bottom:3px solid transparent;transition:.15s}
+.comptab.on{color:#fff;border-bottom-color:var(--oro)}
+.subtabs{display:flex;gap:6px;background:#fff;padding:6px;border-radius:12px;box-shadow:var(--shadow);
+  margin-bottom:16px;overflow-x:auto}
+.subtab{flex:1;white-space:nowrap;text-align:center;padding:9px 12px;border-radius:9px;cursor:pointer;
+  font-weight:700;font-size:13px;color:var(--muted);transition:.15s}
+.subtab.on{background:var(--azul);color:#fff}
+.match.is-boca{border-left:3px solid var(--oro)}
+.whenbox .live{color:var(--live);font-weight:900;font-size:12px;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.45}}

@@ -1,52 +1,48 @@
-# 🔴🔵 Mejora v2 — Datos en vivo, automáticos y con fechas correctas
+# ⚽ Fútbol Argentino 2026 · App INTEGRAL (versión final)
 
-## Qué cambió
-El motor ahora usa **API-Football** (fechas y horarios EXACTOS, verificación multi-fuente)
-en vez de la fuente crowd-sourced. El robot de GitHub Actions:
-- baja el fixture del equipo con fecha/hora reales (ya en hora de Argentina),
-- arma los **cuadros de copa solos** (agrupa ida/vuelta, calcula global y ganador),
-- corre **cada 2 horas** y commitea los cambios.
-Vos no tocás nada.
+App multi-competencia con datos reales en vivo, automática, para iPhone.
 
-## Archivos que reemplaza / agrega
-- scripts/fetch_data.py            (NUEVO motor con API-Football)
-- .github/workflows/update-data.yml (corre cada 2h, usa el secret)
-- assets/app.js, assets/style.css, index.html (front, ya con pestaña Cuadros)
-- data/data.json, data/brackets.json (semillas; el robot las reemplaza)
+## Qué trae ahora
+Selector de 4 competencias, cada una con TODOS sus partidos (no solo Boca):
+- **Liga Profesional** (Zona A y B): partidos, tabla por zona, 👟 figuras (goles/asist/amarillas)
+  y **🧮 Playoffs proyectados**: la app CALCULA los cruces de octavos según la tabla,
+  con desempate (pts → diferencia de gol → goles a favor), y podés simular hasta la final.
+- **Copa Argentina**: partidos + cuadro de eliminación.
+- **Copa Sudamericana**: partidos + tabla de grupos + cuadro.
+- **Copa Libertadores**: partidos + tabla de grupos + cuadro.
+Boca aparece resaltado ⭐ en todos lados. Cuenta regresiva al próximo partido de Boca.
+Marcadores en vivo (●) que refrescan solos.
 
-## PASOS (una sola vez)
+## Cómo se mantiene solo (sin pasar los 100 req/día)
+El robot corre CADA HORA y elige el modo por la hora (UTC):
+- **00, 06, 12, 18 h → full**: baja los 4 fixtures + 3 tablas + 3 rankings (~10 req).
+- **resto → live**: 1 request (/fixtures?live=all) para marcadores en vivo.
+- **Total ~60 requests/día** (límite 100). Los playoffs de Liga se recalculan solos
+  en cada corrida full, según cómo va la tabla.
 
-### 1) Sacá tu API key gratis (2 min, sin tarjeta)
-- Entrá a https://www.api-football.com/  → "Sign in" / crear cuenta.
-- En el dashboard vas a ver tu **API key** (plan Free = 100 requests/día).
+## Instalar en iPhone
+1. Abrí la URL en **Safari**.
+2. **Compartir** → **«Agregar a inicio»**. Queda con ícono, a pantalla completa.
 
-### 2) Guardala como secret en tu repo (NO va en el código)
-- GitHub → tu repo → **Settings → Secrets and variables → Actions**
-- **New repository secret**
-  - Name:  APIFOOTBALL_KEY
-  - Secret: (pegá tu key)
-- **Add secret**
+## Archivos de datos (los genera el robot)
+- data/fixtures.json   -> partidos de las 4 competencias
+- data/standings.json  -> tablas (liga + grupos de copas)
+- data/brackets.json   -> cuadros de copa + proyección de playoffs de Liga
+- data/stats.json      -> goleadores / asistidores / amarillas
+- data/live.json       -> partidos en vivo
 
-### 3) Subí los archivos nuevos
+## Pasos para actualizar tu repo
 ```powershell
 cd C:\Users\valen\bocapp-2026
-# copiá acá los archivos del ZIP (reemplazando)
+# borrá el data.json viejo si existe (cambió el formato):
+del data\data.json
+# copiá TODO lo del ZIP reemplazando
 git add .
-git commit -m "v2: datos en vivo con API-Football + cuadros automaticos"
+git commit -m "app integral: 4 competencias + playoffs Liga calculados"
 git push
 ```
+Luego: Actions → Run workflow (mode: full) para poblar todo con datos reales.
 
-### 4) Encendé el robot
-- Repo → pestaña **Actions** → workflow "Actualizar fixture (API-Football)" → **Run workflow**.
-- A los ~30-60 s se generan data.json y brackets.json con datos reales.
-- Desde ahí corre solo cada 2 h.
-
-## Notas de consumo (para no pasarte del free)
-- Cada corrida usa ~4 requests (equipo + 3 copas).
-- Cada 2 h = 12 corridas/día ≈ 48 requests/día. Entra cómodo en los 100/día. 
-- Si querés más frecuencia durante partidos, cambiá el cron a '*/30 * * * *'
-  (ojo: sube el consumo).
-
-## Cambiar de equipo
-En el workflow, cambiá TEAM_ID y TEAM_NAME. IDs API-Football:
-Boca=451, River=435, Racing=436, Independiente=452, San Lorenzo=460.
+## Config
+- Requiere el secret APIFOOTBALL_KEY (ya lo tenés).
+- IDs de liga usados: 128 Liga, 130 Copa Arg, 11 Sudamericana, 13 Libertadores.

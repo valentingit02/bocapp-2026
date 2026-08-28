@@ -1,0 +1,201 @@
+{
+  "generatedAt": "2026-08-27T23:00:00Z",
+  "ligas": [
+    {
+      "id": "128",
+      "name": "Liga Profesional",
+      "grupos": [
+        {
+          "grupo": "Zona A",
+          "filas": [
+            {
+              "pos": 1,
+              "equipo": "Boca Juniors",
+              "logo": "https://media.api-sports.io/football/teams/451.png",
+              "pj": 6,
+              "g": 4,
+              "e": 1,
+              "p": 1,
+              "gf": 11,
+              "gc": 5,
+              "dg": 6,
+              "pts": 13,
+              "forma": "WWDLW",
+              "boca": true
+            },
+            {
+              "pos": 2,
+              "equipo": "Talleres (Córdoba)",
+              "logo": "https://media.api-sports.io/football/teams/456.png",
+              "pj": 6,
+              "g": 3,
+              "e": 2,
+              "p": 1,
+              "gf": 8,
+              "gc": 4,
+              "dg": 4,
+              "pts": 11,
+              "forma": "DWWDL",
+              "boca": false
+            },
+            {
+              "pos": 3,
+              "equipo": "Estudiantes",
+              "logo": "https://media.api-sports.io/football/teams/450.png",
+              "pj": 6,
+              "g": 3,
+              "e": 1,
+              "p": 2,
+              "gf": 7,
+              "gc": 6,
+              "dg": 1,
+              "pts": 10,
+              "forma": "WLWDL",
+              "boca": false
+            },
+            {
+              "pos": 4,
+              "equipo": "San Lorenzo",
+              "logo": "https://media.api-sports.io/football/teams/460.png",
+              "pj": 6,
+              "g": 2,
+              "e": 3,
+              "p": 1,
+              "gf": 6,
+              "gc": 5,
+              "dg": 1,
+              "pts": 9,
+              "forma": "DDWDL",
+              "boca": false
+            },
+            {
+              "pos": 5,
+              "equipo": "Unión (Santa Fe)",
+              "logo": "https://media.api-sports.io/football/teams/458.png",
+              "pj": 6,
+              "g": 2,
+              "e": 2,
+              "p": 2,
+              "gf": 5,
+              "gc": 5,
+              "dg": 0,
+              "pts": 8,
+              "forma": "LWDDW",
+              "boca": false
+            },
+            {
+              "pos": 6,
+              "equipo": "Deportivo Riestra",
+              "logo": "https://media.api-sports.io/football/teams/2432.png",
+              "pj": 6,
+              "g": 2,
+              "e": 1,
+              "p": 3,
+              "gf": 4,
+              "gc": 6,
+              "dg": -2,
+              "pts": 7,
+              "forma": "LWLLW",
+              "boca": false
+            }
+          ]
+        },
+        {
+          "grupo": "Zona B",
+          "filas": [
+            {
+              "pos": 1,
+              "equipo": "River Plate",
+              "logo": "https://media.api-sports.io/football/teams/435.png",
+              "pj": 6,
+              "g": 4,
+              "e": 2,
+              "p": 0,
+              "gf": 12,
+              "gc": 4,
+              "dg": 8,
+              "pts": 14,
+              "forma": "WWDWD",
+              "boca": false
+            },
+            {
+              "pos": 2,
+              "equipo": "Racing",
+              "logo": "https://media.api-sports.io/football/teams/436.png",
+              "pj": 6,
+              "g": 4,
+              "e": 0,
+              "p": 2,
+              "gf": 9,
+              "gc": 6,
+              "dg": 3,
+              "pts": 12,
+              "forma": "WLWWL",
+              "boca": false
+            },
+            {
+              "pos": 3,
+              "equipo": "Rosario Central",
+              "logo": "https://media.api-sports.io/football/teams/437.png",
+              "pj": 6,
+              "g": 3,
+              "e": 2,
+              "p": 1,
+              "gf": 8,
+              "gc": 5,
+              "dg": 3,
+              "pts": 11,
+              "forma": "DWDWL",
+              "boca": false
+            },
+            {
+              "pos": 4,
+              "equipo": "Huracán",
+              "logo": "https://media.api-sports.io/football/teams/445.png",
+              "pj": 6,
+              "g": 2,
+              "e": 3,
+              "p": 1,
+              "gf": 6,
+              "gc": 5,
+              "dg": 1,
+              "pts": 9,
+              "forma": "DDLWD",
+              "boca": false
+            },
+            {
+              "pos": 5,
+              "equipo": "Belgrano",
+              "logo": "https://media.api-sports.io/football/teams/439.png",
+              "pj": 6,
+              "g": 2,
+              "e": 2,
+              "p": 2,
+              "gf": 5,
+              "gc": 6,
+              "dg": -1,
+              "pts": 8,
+              "forma": "LDWDL",
+              "boca": false
+            },
+            {
+              "pos": 6,
+              "equipo": "Barracas Central",
+              "logo": "https://media.api-sports.io/football/teams/6109.png",
+              "pj": 6,
+              "g": 1,
+              "e": 3,
+              "p": 2,
+              "gf": 4,
+              "gc": 6,
+              "dg": -2,
+              "pts": 6,
+              "forma": "DLDLD",
+              "boca": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

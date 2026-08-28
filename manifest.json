@@ -1,0 +1,15 @@
+{
+  "name": "Boca 2026 · Fixture y Copas",
+  "short_name": "Boca 2026",
+  "description": "Fixture en vivo, tabla, cuadros de copa, goleadores y simulador.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a2472",
+  "theme_color": "#0a2472",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

@@ -1,16 +1,23 @@
-name: Actualizar fixture (API-Football)
+name: Actualizar datos (integral)
 
-# Corre solo: cada 2 h + a las horas tipicas de partidos, y se puede disparar a mano.
-# GitHub Actions es GRATIS e ILIMITADO en repos publicos.
+# Corre CADA HORA. El modo se decide solo por la hora (UTC) para no pasar los 100 req/dia:
+#   horas 00, 06, 12, 18 -> MODE=full (todo: 4 fixtures + 3 tablas + 3 rankings = ~10 req)
+#   resto de las horas    -> MODE=live (1 req: /fixtures?live=all)
+#   Total ~ 4*10 + 20*1 = 60 requests/dia (limite 100).
 on:
   schedule:
-    - cron: '13 */2 * * *'    # cada 2 horas (min 13 para evitar congestion)
-  workflow_dispatch:           # boton "Run workflow" para probar
+    - cron: '12 * * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'full = todo, live = solo en vivo'
+        required: false
+        default: 'full'
+        type: choice
+        options: [full, live]
 
 permissions:
   contents: write
-
-# Evita que dos corridas se pisen
 concurrency:
   group: update-data
   cancel-in-progress: false
@@ -20,27 +27,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Descargar datos reales (fixture + cuadros)
-        env:
-          APIFOOTBALL_KEY: ${{ secrets.APIFOOTBALL_KEY }}   # secret obligatorio
-          TEAM_ID: '451'          # Boca Juniors
-          TEAM_NAME: 'Boca Juniors'
-          SEASON: '2026'
-        run: python scripts/fetch_data.py
+      - name: Definir modo segun la hora
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "mode=${{ github.event.inputs.mode }}" >> $GITHUB_OUTPUT
+          else
+            H=$(date -u +%H)
+            case "$H" in
+              00|06|12|18) echo "mode=full" >> $GITHUB_OUTPUT ;;
+              *)           echo "mode=live" >> $GITHUB_OUTPUT ;;
+            esac
+          fi
 
-      - name: Commitear si hubo cambios
+      - name: Descargar datos
+        env:
+          APIFOOTBALL_KEY: ${{ secrets.APIFOOTBALL_KEY }}
+          SEASON: '2026'
+          MODE: ${{ steps.mode.outputs.mode }}
+        run: |
+          echo "MODE=$MODE"
+          python scripts/fetch_data.py
+
+      - name: Commitear cambios
         run: |
           git config user.name  "fixture-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data/data.json data/brackets.json
+          git add data/*.json
           if git diff --staged --quiet; then
             echo "Sin cambios."
           else
-            git commit -m "data: fixture y cuadros $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git commit -m "data (${{ steps.mode.outputs.mode }}): $(date -u +'%Y-%m-%d %H:%M UTC')"
             git push
           fi

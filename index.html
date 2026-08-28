@@ -2,72 +2,80 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Boca 2026 · Fixture real + Cuadros + Simulador</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Fútbol Argentino 2026 · En vivo</title>
+
+<!-- PWA / iPhone -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a2472">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="assets/icons/favicon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fútbol AR">
+
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 <header>
   <div class="head-in">
-    <div class="crest" id="crest">CABJ</div>
-    <div><h1 id="title">Boca 2026 <small>FIXTURE REAL · DATOS EN VIVO</small></h1></div>
+    <div class="crest" id="crest">⚽</div>
+    <div><h1 id="title">Fútbol Argentino 2026 <small>EN VIVO · TODAS LAS COPAS</small></h1></div>
     <div class="upd" id="updated">Cargando…</div>
   </div>
+  <!-- selector de competencia -->
+  <div class="comptabs" id="comptabs"></div>
 </header>
 
 <div class="wrap">
   <div class="countdown" id="countdown" style="display:none">
     <div>
-      <div class="lbl">⏱ Próximo partido</div>
+      <div class="lbl">⏱ Próximo partido de Boca</div>
       <div class="mt">—</div>
       <div class="sub" style="font-size:12px;color:#cfe0ff"></div>
     </div>
     <div class="clk" id="cdClock">--:--:--</div>
   </div>
 
-  <div class="tabs">
-    <div class="tab active" data-v="prox">📅 Próximos</div>
-    <div class="tab" data-v="result">✅ Resultados</div>
-    <div class="tab" data-v="cuadros">🏆 Cuadros</div>
-    <div class="tab" data-v="sim">🎮 Simulador</div>
-  </div>
+  <!-- subpestañas (partidos / tabla / cuadro / figuras) -->
+  <div class="subtabs" id="subtabs"></div>
 
-  <section class="view active" id="prox">
-    <div class="chips" id="chipsProx"></div>
-    <div id="listProx"><div class="state"><div class="spin"></div>Cargando…</div></div>
-    <button class="chip" id="btnRefresh" style="margin-top:8px">🔄 Actualizar ahora</button>
-  </section>
+  <!-- panel dinamico -->
+  <div id="panel"><div class="state"><div class="spin"></div>Cargando…</div></div>
 
-  <section class="view" id="result">
-    <div id="listResult"><div class="state">—</div></div>
-  </section>
-
-  <!-- NUEVO: cuadros de eliminatorias interactivos -->
-  <section class="view" id="cuadros">
-    <div class="brk-tabs" id="brkTabs"></div>
-    <div class="brk-info" id="brkInfo"></div>
-    <div class="bracket" id="bracket"><div class="state"><div class="spin"></div>Cargando cuadros…</div></div>
-    <div class="champ-box" id="champBox"></div>
-    <button class="chip" id="brkReset" style="margin-top:12px">↺ Reiniciar simulación del cuadro</button>
-  </section>
-
-  <section class="view" id="sim">
-    <div class="simbox">
-      <h4>🎮 ¿Cómo simulo?</h4>
-      <p style="font-size:13.5px;color:var(--muted);line-height:1.7">
-        Andá a la pestaña <b>🏆 Cuadros</b> y tocá al equipo que creés que gana cada llave.
-        La app propaga automáticamente los ganadores ronda a ronda hasta la final,
-        y te muestra el <b>campeón simulado</b>. Las llaves con resultado real ya vienen
-        marcadas y no se pueden cambiar. Con <b>↺ Reiniciar</b> volvés a empezar.</p>
-    </div>
-  </section>
+  <button class="chip" id="btnRefresh" style="margin-top:14px">🔄 Actualizar</button>
 </div>
 
 <footer>
-  Datos reales de <a href="https://www.thesportsdb.com" target="_blank">TheSportsDB</a> ·
-  cuadros en <code>data/brackets.json</code> (editables) · actualización vía GitHub Actions · 100% gratis.
+  Datos reales de <a href="https://www.api-football.com" target="_blank">API-Football</a> ·
+  actualización automática cada hora vía GitHub Actions · Playoffs de Liga calculados por clasificación · 100% gratis.
 </footer>
 
+<!-- Banner iOS -->
+<div id="iosBanner" style="display:none;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));
+  background:#123fb0;color:#fff;border:1px solid #ffcb05;border-radius:14px;padding:12px 14px;
+  box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:13px;z-index:200;display:flex;gap:10px;align-items:center">
+  <img src="assets/icons/apple-touch-icon.png" style="width:40px;height:40px;border-radius:9px;flex-shrink:0">
+  <div style="flex:1">Instalá la app: tocá <b>Compartir</b> y luego <b>«Agregar a inicio»</b> 📲</div>
+  <button onclick="document.getElementById('iosBanner').style.display='none';localStorage.setItem('iosBannerOff','1')"
+    style="background:transparent;border:none;color:#ffcb05;font-size:20px;font-weight:900;cursor:pointer">×</button>
+</div>
+
 <script src="assets/app.js"></script>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      const base = location.pathname.replace(/index\.html$/, "");
+      navigator.serviceWorker.register(base + "sw.js").catch(()=>{});
+    });
+  }
+  (function(){
+    const isIOS=/iPhone|iPad|iPod/.test(navigator.userAgent);
+    const standalone=("standalone" in navigator)&&navigator.standalone;
+    if(isIOS&&!standalone&&!localStorage.getItem("iosBannerOff"))
+      setTimeout(()=>{document.getElementById("iosBanner").style.display="flex";},1500);
+  })();
+</script>
 </body>
 </html>
