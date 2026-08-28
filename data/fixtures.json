@@ -1,36 +1,34 @@
 {
-  "generatedAt": "2026-08-27T23:00:00Z",
+  "generatedAt": "2026-08-28T00:48:13.878418+00:00",
   "season": "2026",
-  "_nota": "Semilla. El robot la reemplaza con TODOS los partidos reales de las 4 competencias.",
   "competencias": [
     {
-      "id": "128", "name": "Liga Profesional", "color": "#75aadb", "count": 4,
-      "matches": [
-        {"id":1001,"compId":"128","liga":"Liga Profesional","round":"Fecha 7","home":"Boca Juniors","away":"Lanús","homeLogo":"https://media.api-sports.io/football/teams/451.png","awayLogo":"https://media.api-sports.io/football/teams/462.png","homeScore":null,"awayScore":null,"date":"2026-08-28","time":"21:30:00","timestamp":"2026-08-28T21:30:00-03:00","venue":"La Bombonera","status":"NS","neutral":false,"boca":true},
-        {"id":1002,"compId":"128","liga":"Liga Profesional","round":"Fecha 7","home":"Talleres","away":"Central Córdoba","homeLogo":"https://media.api-sports.io/football/teams/456.png","awayLogo":"https://media.api-sports.io/football/teams/2432.png","homeScore":null,"awayScore":null,"date":"2026-08-29","time":"21:30:00","timestamp":"2026-08-29T21:30:00-03:00","venue":"Mario A. Kempes","status":"NS","neutral":false,"boca":false},
-        {"id":1003,"compId":"128","liga":"Liga Profesional","round":"Fecha 7","home":"Banfield","away":"River Plate","homeLogo":"https://media.api-sports.io/football/teams/454.png","awayLogo":"https://media.api-sports.io/football/teams/435.png","homeScore":null,"awayScore":null,"date":"2026-08-30","time":"15:00:00","timestamp":"2026-08-30T15:00:00-03:00","venue":"Florencio Sola","status":"NS","neutral":false,"boca":false},
-        {"id":1004,"compId":"128","liga":"Liga Profesional","round":"Fecha 8","home":"Gimnasia (Mza.)","away":"Boca Juniors","homeScore":null,"awayScore":null,"date":"2026-09-06","time":"00:00:00","timestamp":"2026-09-06T00:00:00-03:00","venue":"Víctor Legrotaglie","status":"NS","neutral":false,"boca":true}
-      ]
+      "id": "128",
+      "name": "Liga Profesional",
+      "color": "#75aadb",
+      "count": 0,
+      "matches": []
     },
     {
-      "id": "130", "name": "Copa Argentina", "color": "#75aadb", "count": 2,
-      "matches": [
-        {"id":2001,"compId":"130","liga":"Copa Argentina","round":"Octavos de final","home":"Vélez","away":"Boca Juniors","homeLogo":"https://media.api-sports.io/football/teams/441.png","awayLogo":"https://media.api-sports.io/football/teams/451.png","homeScore":null,"awayScore":null,"date":"2026-09-02","time":"21:15:00","timestamp":"2026-09-02T21:15:00-03:00","venue":"Mario A. Kempes, Córdoba","status":"NS","neutral":true,"boca":true},
-        {"id":2002,"compId":"130","liga":"Copa Argentina","round":"Octavos de final","home":"Racing","away":"Belgrano","homeScore":"1","awayScore":"0","date":"2026-08-19","time":"21:00:00","timestamp":"2026-08-19T21:00:00-03:00","venue":"La Pedrera","status":"FT","neutral":true,"boca":false}
-      ]
+      "id": "130",
+      "name": "Copa Argentina",
+      "color": "#75aadb",
+      "count": 0,
+      "matches": []
     },
     {
-      "id": "11", "name": "Copa Sudamericana", "color": "#00a859", "count": 2,
-      "matches": [
-        {"id":3001,"compId":"11","liga":"Copa Sudamericana","round":"Quarter-finals","home":"Boca Juniors","away":"São Paulo","homeLogo":"https://media.api-sports.io/football/teams/451.png","awayLogo":"https://media.api-sports.io/football/teams/126.png","homeScore":null,"awayScore":null,"date":"2026-09-08","time":"21:30:00","timestamp":"2026-09-08T21:30:00-03:00","venue":"La Bombonera","status":"NS","neutral":false,"boca":true},
-        {"id":3002,"compId":"11","liga":"Copa Sudamericana","round":"Quarter-finals","home":"Santos","away":"Atlético Mineiro","homeScore":null,"awayScore":null,"date":"2026-09-09","time":"19:00:00","timestamp":"2026-09-09T19:00:00-03:00","venue":"Vila Belmiro","status":"NS","neutral":false,"boca":false}
-      ]
+      "id": "11",
+      "name": "Copa Sudamericana",
+      "color": "#00a859",
+      "count": 0,
+      "matches": []
     },
     {
-      "id": "13", "name": "Copa Libertadores", "color": "#c9302c", "count": 1,
-      "matches": [
-        {"id":4001,"compId":"13","liga":"Copa Libertadores","round":"Quarter-finals","home":"Racing","away":"Flamengo","homeLogo":"https://media.api-sports.io/football/teams/436.png","awayLogo":"https://media.api-sports.io/football/teams/127.png","homeScore":null,"awayScore":null,"date":"2026-09-16","time":"21:30:00","timestamp":"2026-09-16T21:30:00-03:00","venue":"El Cilindro","status":"NS","neutral":false,"boca":false}
-      ]
+      "id": "13",
+      "name": "Copa Libertadores",
+      "color": "#c9302c",
+      "count": 0,
+      "matches": []
     }
   ]
 }

@@ -1,25 +1,8 @@
 {
-  "generatedAt": "2026-08-27T23:00:00Z",
+  "generatedAt": "2026-08-28T00:48:13.878418+00:00",
   "liga": "Liga Profesional",
   "season": "2026",
-  "_nota": "Semilla ilustrativa. El robot la reemplaza con los rankings reales de API-Football.",
-  "goleadores": [
-    {"jugador":"Milton Giménez","foto":null,"equipo":"Boca Juniors","logoEquipo":"https://media.api-sports.io/football/teams/451.png","valor":7,"partidos":6,"boca":true},
-    {"jugador":"Adam Bareiro","foto":null,"equipo":"River Plate","logoEquipo":"https://media.api-sports.io/football/teams/435.png","valor":6,"partidos":6,"boca":false},
-    {"jugador":"Maravilla Martínez","foto":null,"equipo":"Racing","logoEquipo":"https://media.api-sports.io/football/teams/436.png","valor":6,"partidos":6,"boca":false},
-    {"jugador":"Guido Carrillo","foto":null,"equipo":"Estudiantes","logoEquipo":"https://media.api-sports.io/football/teams/450.png","valor":5,"partidos":6,"boca":false},
-    {"jugador":"Alejandro Martínez","foto":null,"equipo":"Huracán","logoEquipo":"https://media.api-sports.io/football/teams/445.png","valor":5,"partidos":6,"boca":false}
-  ],
-  "asistidores": [
-    {"jugador":"Kevin Zenón","foto":null,"equipo":"Boca Juniors","logoEquipo":"https://media.api-sports.io/football/teams/451.png","valor":5,"partidos":6,"boca":true},
-    {"jugador":"Nacho Fernández","foto":null,"equipo":"River Plate","logoEquipo":"https://media.api-sports.io/football/teams/435.png","valor":4,"partidos":6,"boca":false},
-    {"jugador":"Agustín Almendra","foto":null,"equipo":"Racing","logoEquipo":"https://media.api-sports.io/football/teams/436.png","valor":4,"partidos":6,"boca":false},
-    {"jugador":"Ignacio Malcorra","foto":null,"equipo":"Rosario Central","logoEquipo":"https://media.api-sports.io/football/teams/437.png","valor":3,"partidos":6,"boca":false}
-  ],
-  "amarillas": [
-    {"jugador":"Marcos Rojo","foto":null,"equipo":"Racing","logoEquipo":"https://media.api-sports.io/football/teams/436.png","valor":5,"partidos":6,"boca":false},
-    {"jugador":"Ander Herrera","foto":null,"equipo":"Boca Juniors","logoEquipo":"https://media.api-sports.io/football/teams/451.png","valor":4,"partidos":6,"boca":true},
-    {"jugador":"Leonardo Godoy","foto":null,"equipo":"Talleres (Córdoba)","logoEquipo":"https://media.api-sports.io/football/teams/456.png","valor":4,"partidos":6,"boca":false},
-    {"jugador":"Enzo Díaz","foto":null,"equipo":"River Plate","logoEquipo":"https://media.api-sports.io/football/teams/435.png","valor":4,"partidos":6,"boca":false}
-  ]
+  "goleadores": [],
+  "asistidores": [],
+  "amarillas": []
 }
