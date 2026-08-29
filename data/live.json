@@ -1,27 +1,4 @@
 {
-  "generatedAt": "2026-08-28T23:01:02.762176+00:00",
-  "matches": [
-    {
-      "id": 1493106,
-      "compId": "128",
-      "liga": "Liga Profesional Argentina",
-      "ligaLogo": "https://media.api-sports.io/football/leagues/128.png",
-      "round": "Clausura - 7",
-      "home": "Union Santa Fe",
-      "away": "Sarmiento Junin",
-      "homeId": 441,
-      "awayId": 474,
-      "homeLogo": "https://media.api-sports.io/football/teams/441.png",
-      "awayLogo": "https://media.api-sports.io/football/teams/474.png",
-      "homeScore": 1,
-      "awayScore": 0,
-      "date": "2026-08-28",
-      "time": "19:00:00",
-      "timestamp": "2026-08-28T19:00:00-03:00",
-      "venue": "Estadio 15 de Abril",
-      "status": "HT",
-      "neutral": false,
-      "boca": false
-    }
-  ]
+  "generatedAt": "2026-08-29T04:08:48.575794+00:00",
+  "matches": []
 }
