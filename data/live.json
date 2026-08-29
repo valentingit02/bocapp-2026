@@ -1,4 +1,27 @@
 {
-  "generatedAt": "2026-08-29T15:37:24.498152+00:00",
-  "matches": []
+  "generatedAt": "2026-08-29T19:23:49.288987+00:00",
+  "matches": [
+    {
+      "id": 1493097,
+      "compId": "128",
+      "liga": "Liga Profesional Argentina",
+      "ligaLogo": "https://media.api-sports.io/football/leagues/128.png",
+      "round": "Clausura - 7",
+      "home": "Deportivo Riestra",
+      "away": "Velez Sarsfield",
+      "homeId": 476,
+      "awayId": 438,
+      "homeLogo": "https://media.api-sports.io/football/teams/476.png",
+      "awayLogo": "https://media.api-sports.io/football/teams/438.png",
+      "homeScore": 1,
+      "awayScore": 1,
+      "date": "2026-08-29",
+      "time": "14:45:00",
+      "timestamp": "2026-08-29T14:45:00-03:00",
+      "venue": "Estadio Guillermo Laza",
+      "status": "2H",
+      "neutral": false,
+      "boca": false
+    }
+  ]
 }
