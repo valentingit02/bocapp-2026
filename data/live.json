@@ -1,4 +1,27 @@
 {
-  "generatedAt": "2026-09-05T16:02:57.559467+00:00",
-  "matches": []
+  "generatedAt": "2026-09-05T21:12:47.365575+00:00",
+  "matches": [
+    {
+      "id": 1493113,
+      "compId": "128",
+      "liga": "Liga Profesional Argentina",
+      "ligaLogo": "https://media.api-sports.io/football/leagues/128.png",
+      "round": "Clausura - 8",
+      "home": "Gimnasia M.",
+      "away": "Boca Juniors",
+      "homeId": 1066,
+      "awayId": 451,
+      "homeLogo": "https://media.api-sports.io/football/teams/1066.png",
+      "awayLogo": "https://media.api-sports.io/football/teams/451.png",
+      "homeScore": 1,
+      "awayScore": 2,
+      "date": "2026-09-05",
+      "time": "16:30:00",
+      "timestamp": "2026-09-05T16:30:00-03:00",
+      "venue": "Victor Legrotaglie",
+      "status": "2H",
+      "neutral": false,
+      "boca": true
+    }
+  ]
 }
