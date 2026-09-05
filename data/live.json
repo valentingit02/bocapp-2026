@@ -1,27 +1,4 @@
 {
-  "generatedAt": "2026-09-04T21:26:42.457673+00:00",
-  "matches": [
-    {
-      "id": 1493111,
-      "compId": "128",
-      "liga": "Liga Profesional Argentina",
-      "ligaLogo": "https://media.api-sports.io/football/leagues/128.png",
-      "round": "Clausura - 8",
-      "home": "Estudiantes de Rio Cuarto",
-      "away": "Sarmiento Junin",
-      "homeId": 2424,
-      "awayId": 474,
-      "homeLogo": "https://media.api-sports.io/football/teams/2424.png",
-      "awayLogo": "https://media.api-sports.io/football/teams/474.png",
-      "homeScore": 0,
-      "awayScore": 2,
-      "date": "2026-09-04",
-      "time": "16:45:00",
-      "timestamp": "2026-09-04T16:45:00-03:00",
-      "venue": null,
-      "status": "2H",
-      "neutral": false,
-      "boca": false
-    }
-  ]
+  "generatedAt": "2026-09-05T04:23:12.905687+00:00",
+  "matches": []
 }
