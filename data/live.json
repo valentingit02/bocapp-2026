@@ -1,27 +1,4 @@
 {
-  "generatedAt": "2026-09-05T23:52:47.838065+00:00",
-  "matches": [
-    {
-      "id": 1493119,
-      "compId": "128",
-      "liga": "Liga Profesional Argentina",
-      "ligaLogo": "https://media.api-sports.io/football/leagues/128.png",
-      "round": "Clausura - 8",
-      "home": "San Lorenzo",
-      "away": "Talleres Cordoba",
-      "homeId": 460,
-      "awayId": 456,
-      "homeLogo": "https://media.api-sports.io/football/teams/460.png",
-      "awayLogo": "https://media.api-sports.io/football/teams/456.png",
-      "homeScore": 1,
-      "awayScore": 0,
-      "date": "2026-09-05",
-      "time": "19:00:00",
-      "timestamp": "2026-09-05T19:00:00-03:00",
-      "venue": "Estadio Pedro Bidegain",
-      "status": "2H",
-      "neutral": false,
-      "boca": false
-    }
-  ]
+  "generatedAt": "2026-09-06T04:35:02.802413+00:00",
+  "matches": []
 }
